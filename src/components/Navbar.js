@@ -19,7 +19,7 @@ const Navbar = () => {
       <ul className="navbar-links">
         <li>
           <a
-            href="#home"
+            href="/"
             className="navbar-link"
             data-nav-link=""
             onClick={handleScroll}
@@ -29,12 +29,12 @@ const Navbar = () => {
         </li>
         <li>
           <a
-            href="#projects"
+            href="/"
             className="navbar-link"
             data-nav-link=""
             onClick={handleScroll}
           >
-            Projects
+            Idk
           </a>
         </li>
       </ul>
@@ -59,7 +59,7 @@ const Navbar = () => {
           <ul className="dropdown-item-container">
             <a
               className="navLinks"
-              href="#home"
+              href="/"
               data-nav-link=""
               onClick={() => setOpen((prev) => !prev)}
             >
@@ -67,10 +67,10 @@ const Navbar = () => {
             </a>
             <a
               className="navLinks"
-              href="#projects"
+              href="/"
               onClick={() => setOpen((prev) => !prev)}
             >
-              <li className="dropdown-item">Projects</li>
+              <li className="dropdown-item">Idk</li>
             </a>
           </ul>
         </div>
