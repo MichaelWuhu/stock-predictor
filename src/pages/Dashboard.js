@@ -46,6 +46,7 @@ const RAW_SERIES = [
   { x: "F5", price: 199.6, isFuture: true },
 ];
 
+const TF_COUNTS = { "1W": 5, "1M": 22, "3M": 66, YTD: Infinity };
 
 const MOCK_SIDEBAR = {
   price: 198.45,
@@ -73,17 +74,37 @@ function SidebarRow({ label, value, accent }) {
   );
 }
 
+function slicePast(pastArr, tfKey) {
+  const n = TF_COUNTS[tfKey] ?? Infinity;
+  if (!isFinite(n)) return pastArr;
+  return pastArr.slice(-n);
+}
+
 // ---------- Main component ----------
 export default function Dashboard() {
   const [sidebarOpen, setSidebarOpen] = useState(true);
+  const [timeframe, setTimeframe] = useState("1M");
 
-  const past = useMemo(() => RAW_SERIES.filter((d) => !d.isFuture), []);
-  const future = useMemo(() => RAW_SERIES.filter((d) => d.isFuture), []);
+  const allPast = useMemo(() => RAW_SERIES.filter((d) => !d.isFuture), []);
+  const allFuture = useMemo(() => RAW_SERIES.filter((d) => d.isFuture), []);
 
+  // apply timeframe
+  const past = useMemo(
+    () => slicePast(allPast, timeframe),
+    [allPast, timeframe]
+  );
+
+  // join bounds so dashed starts at the last visible past point
   const futureWithAnchor = useMemo(() => {
-    const anchor = past[past.length - 1];
-    return anchor ? [anchor, ...future] : future;
-  }, [past, future]);
+    const anchor = past[past.length - 1] ?? allPast[allPast.length - 1];
+    return anchor ? [anchor, ...allFuture] : allFuture;
+  }, [past, allPast, allFuture]);
+
+  // tight y-domain for visible series
+  const allVisible = [...past, ...futureWithAnchor];
+  const yMin = Math.min(...allVisible.map((d) => d.price));
+  const yMax = Math.max(...allVisible.map((d) => d.price));
+  const pad = Math.max(1, Math.round((yMax - yMin) * 0.08));
 
   return (
     <div className="dashboard">
@@ -100,6 +121,18 @@ export default function Dashboard() {
             ))}
           </div>
 
+          <div className="tf-row">
+            {["1W", "1M", "3M", "YTD"].map((tf) => (
+              <button
+                key={tf}
+                className={`tf-btn ${timeframe === tf ? "active" : ""}`}
+                onClick={() => setTimeframe(tf)}
+              >
+                {tf}
+              </button>
+            ))}
+          </div>
+
           {/* Chart */}
           <div className="chart-card">
             <div className="chart-header">
@@ -108,16 +141,24 @@ export default function Dashboard() {
             </div>
             <div className="chart-wrapper">
               <ResponsiveContainer width="100%" height="100%">
-                <LineChart data={past}>
+                <LineChart
+                  data={past}
+                  margin={{ top: 8, right: 12, bottom: 0, left: 0 }}
+                >
                   <CartesianGrid strokeDasharray="3 3" />
                   <XAxis dataKey="x" tick={false} />
-                  <YAxis width={40} />
+                  <YAxis
+                    width={46}
+                    domain={[yMin - pad, yMax + pad]}
+                    tickCount={6}
+                  />
                   <RTooltip />
                   <Line
                     type="monotone"
                     dataKey="price"
                     dot={false}
                     strokeWidth={2}
+                    stroke="#2563eb"
                   />
                   <Line
                     type="monotone"
@@ -125,6 +166,7 @@ export default function Dashboard() {
                     dataKey="price"
                     dot={false}
                     strokeWidth={2}
+                    stroke="#16a34a"
                     strokeDasharray="6 6"
                   />
                 </LineChart>
