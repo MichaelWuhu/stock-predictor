@@ -1,0 +1,218 @@
+.navbar {
+  display: flex;
+  justify-content: right;
+  align-items: center;;
+  gap: 40%;
+  padding:2rem 5rem 2rem 2rem;
+  width: 100%;
+  height: 10vh;;
+  font-weight: bold;
+  font-size: 1.5rem;
+  position: fixed;
+  top: 0;
+  color: white;
+  background-color: rgb(28, 28, 28); 
+  border-bottom: 2.5px solid rgb(150, 155, 200);
+  z-index: 100;
+  margin-top: 0;
+}
+
+.navbar-header {
+  width: auto;
+}
+
+.navbar-links {
+  display: flex;
+  justify-content: space-between;
+  gap: 3rem;
+  list-style-type: none;
+}
+
+.navbar-link {
+  color: white;
+  text-decoration: none;
+  transition: 0.5s;
+}
+
+.hamburger-and-dropdown {
+  display: none;
+}
+
+@media (max-width: 1200px) {
+  .navbar {
+    gap: 0;
+    justify-content: flex-start;
+    padding: 0;
+    background-color: rgb(25, 25, 28);
+  }
+  
+  .navbar-header {
+    display: none;
+  }
+
+  .navbar-links {
+    display: none;
+  }
+
+  .hamburger-and-dropdown {
+    display: flex;
+  }
+
+  .dropdown-menu {
+    position: absolute;
+    display: flex;
+    top: 10vh;
+    background-color: rgb(25, 25, 28);
+    padding: 1rem 0;
+    color: white;
+    height: 100vh;
+    width: 25%;
+    transform: translateX(-100%);
+    transition: transform 0.3s ease;
+  }
+
+  .dropdown-menu.active {
+    opacity: 1;
+    visibility: visible;
+    transition: 0.3s;
+    transform: translateX(0);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+  }
+
+  .dropdown-menu.inactive {
+    opacity: 0;
+    visibility: hidden;
+    transition: 0.3s;
+  }
+
+  .dropdown-item-container {
+    list-style: none;
+    padding: 0;
+    width: 100%;
+    font-weight: bolder;
+  }
+
+  .dropdown-menu ul li {
+    padding: 8px;
+    height: 5rem;
+    display: flex;
+    margin: 0 15px;
+    align-items: center;
+    font-size: 2rem;
+  }
+
+  .dropdown-menu ul li:hover {
+    background-color: #707070;
+    cursor: pointer;
+    border-radius: 10px;
+  }
+
+  .navLinks {
+    text-decoration: none;
+    color: inherit;
+  }
+
+  /* Hamburger */
+  .hamburger {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-around;
+    list-style: none;
+    margin-left: 2rem;
+    margin-right: auto;
+  }
+
+
+  #hamburger-container {
+    cursor: pointer;
+    transition: 0.3s ease;
+  }
+
+  #hamburger-container:hover {
+    transform: scale(1.05);
+  }
+
+  #hamburger {
+    width: 40px; 
+    height: 30px;
+    position: relative;
+    -webkit-transform: rotate(0deg);
+    -moz-transform: rotate(0deg);
+    -o-transform: rotate(0deg);
+    transform: rotate(0deg);
+    -webkit-transition: 0.5s ease-in-out;
+    -moz-transition: 0.5s ease-in-out;
+    -o-transition: 0.5s ease-in-out;
+    transition: 0.5s ease-in-out;
+    cursor: pointer;
+  }
+
+  #hamburger span {
+    display: block;
+    position: absolute;
+    height: 3px;
+    width: 100%;
+    background: white;
+    border-radius: 6px; 
+    opacity: 1;
+    left: 0;
+    -webkit-transform: rotate(0deg);
+    -moz-transform: rotate(0deg);
+    -o-transform: rotate(0deg);
+    transform: rotate(0deg);
+    -webkit-transition: 0.25s ease-in-out;
+    -moz-transition: 0.25s ease-in-out;
+    -o-transition: 0.25s ease-in-out;
+    transition: 0.25s ease-in-out;
+  }
+
+  #hamburger span:nth-child(1) {
+    top: 0px;
+  }
+
+  #hamburger span:nth-child(2),
+  #hamburger span:nth-child(3) {
+    top: 12px; 
+  }
+
+  #hamburger span:nth-child(4) {
+    top: 24px; 
+  }
+
+  #hamburger.open span:nth-child(1) {
+    top: 12px; 
+    width: 0%;
+    left: 50%;
+  }
+
+  #hamburger.open span:nth-child(2) {
+    -webkit-transform: rotate(45deg);
+    -moz-transform: rotate(45deg);
+    -o-transform: rotate(45deg);
+    transform: rotate(45deg);
+  }
+
+  #hamburger.open span:nth-child(3) {
+    -webkit-transform: rotate(-45deg);
+    -moz-transform: rotate(-45deg);
+    -o-transform: rotate(-45deg);
+    transform: rotate(-45deg);
+  }
+
+  #hamburger.open span:nth-child(4) {
+    top: 12px; 
+    width: 0%;
+    left: 50%;
+  }
+}
+
+@media (max-width: 700px) {
+  .dropdown-menu {
+    width: 45%;
+  }
+
+  .dropdown-menu ul li {
+    font-size: 1.5rem;
+  }
+}
